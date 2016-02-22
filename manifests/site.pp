@@ -44,12 +44,17 @@ node default {
   #   class { 'my_class': }
   
   file { '/etc/motd':
+  noop => true
   ensure  => file,
   owner   => 'root',
   group   => 'root',
   mode    => '0644',
   content => "To infinity and Beyond !! Titles and namevar are differnt\n",
 }
+  exec {"cowsay 'Welcome to ${::fqdn}!' > /etc/motd":
+  path => /usr/local/bin,
+  creates => /etc/motd,
+  }
   
   notify { "Hello, my name is ${::hostname}": }
 }
