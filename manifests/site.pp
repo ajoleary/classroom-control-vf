@@ -44,12 +44,20 @@ node default {
   #   class { 'my_class': }
   
   file { '/etc/motd':
-  noop    => true,
   ensure  => file,
   owner   => 'root',
   group   => 'root',
   mode    => '0644',
   content => "To infinity and Beyond !! Titles and namevar are differnt\n",
+}
+
+  exec { "cowsay 'Welcome to ${::fqdn}!' > /etc/motd":
+  path => '/usr/bin:/usr/local/bin',
+  creates => '/etc/motd',
+}
+  host { 'testing.puppetlabs.vm':
+  ensure => present,
+  ip => '127.0.0.1',
 }
 
   
