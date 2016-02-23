@@ -9,7 +9,7 @@ file { 'memcached-config':
 ensure => file,
 path => '/etc/sysconfig/memcached',
 require => Package['memcached'],
-source => 'puppet:///modules/memcached/memcached',
+source => 'puppet:///modules/memcached/memcached-config',
 }
 
 service { 'memcached':
