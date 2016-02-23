@@ -8,7 +8,7 @@ ensure => present,
 file {'memcached-config':
 ensure => file,
 path => '/etc/sysconfig/memcached',
-require => Package [memecached],
+require => Package ['memecached'],
 source => 'puppet:///modules/memcached/memcached',
 }
 
