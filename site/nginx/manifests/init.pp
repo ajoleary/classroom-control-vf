@@ -5,7 +5,7 @@ ensure => present,
 
 file { 'docroot':
 ensure => directory,
-path => " /var/www",
+path => "/var/www",
 }
 file { 'index':
 ensure => file,
@@ -25,6 +25,9 @@ path => "/etc/nginx/conf.d/default.conf",
 source =>'puppet:///modules/nginx/nginx.conf,
 }
 
-
-
+service { 'nginx':
+ensure => running,
+require => file['docroot'],Package['nginx],
+subscribe => [File['index'],File[config]]
+}
 }
