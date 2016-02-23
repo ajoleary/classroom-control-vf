@@ -1,18 +1,20 @@
-class memecached{
+class memcached{
 
 
-package { 'memecached':
+package { 'memcached':
 ensure => present,
 }
 
-file 'memecached-config':
+file 'memcached-config':
 ensure => file,
+path => '/etc/sysconfig/memcached',
 require => Package [memecached],
+source => 'puppet:///modules/memcached/memcached',
 }
 
-service { 'memecached':
+service { 'memcached':
 ensure => running,
-enable =>
-subscribe => File ['memecached-config']
+enable => true,
+subscribe => File ['memcached-config'],
 }
 }
