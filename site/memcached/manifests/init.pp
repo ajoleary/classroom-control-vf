@@ -5,7 +5,7 @@ package { 'memcached':
 ensure => present,
 }
 
-file 'memcached-config':
+file {'memcached-config':
 ensure => file,
 path => '/etc/sysconfig/memcached',
 require => Package [memecached],
