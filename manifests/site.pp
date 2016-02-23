@@ -44,6 +44,7 @@ node default {
   #   class { 'my_class': }
   
   file { '/etc/motd':
+  noop    => true,
   ensure  => file,
   owner   => 'root',
   group   => 'root',
