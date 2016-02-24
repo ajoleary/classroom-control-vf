@@ -43,15 +43,13 @@ node default {
   # Example:
   #   class { 'my_class': }
 
-user { 'admin': 
-ensure => present, 
-} 
-class { 'aliases': 
-admin   => 'admin', 
- require => User['admin'], 
-} 
- 
- 
+user { 'admin':
+ensure => present,
+}
+class { 'aliases':
+admin => 'admin',
+require => User['admin'],
+}
  
 if $::virtual != 'physical' {
 $hyperv = capitalize($::virtual)
