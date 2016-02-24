@@ -1,14 +1,12 @@
-define users::managed_user
-{
+define users::managed_user (
+$group = $title,
+) {
 user { $title:
 ensure => present,
 }
 file { "/home/${title}":
 ensure => directory,
 owner => $title,
-gid => $title,
-}
-file { "/home/$title/.ssh":
-ensure => directory,
+group => $group,
 }
 }
