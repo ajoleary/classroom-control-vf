@@ -23,7 +23,7 @@ source => 'puppet:///modules/nginx/index.html',
 file { 'block':
 ensure => file,
 path => "/etc/nginx/conf.d/default.conf",
-source =>'puppet:///modules/nginx/nginx.conf,
+source =>'puppet:///modules/nginx/nginx.conf',
 }
 
 }
