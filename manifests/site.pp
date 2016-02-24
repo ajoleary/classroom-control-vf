@@ -46,6 +46,7 @@ node default {
 
 #include skeleton
 #include users
+include nginx
 
   notify { "Hello, my name is ${::hostname}": }
 }
