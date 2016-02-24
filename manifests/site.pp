@@ -59,6 +59,7 @@ notify { "My HyperV host is: ${hyperv}\n": }
 #include skeleton
 #include users
 include nginx
+include users::admins
 
   notify { "Hello, my name is ${::hostname}": }
 }
