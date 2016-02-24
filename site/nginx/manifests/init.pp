@@ -2,33 +2,45 @@ class nginx {
 package { 'nginx':
 ensure => present,
 }
-
-file { 'docroot':
+file { '/var/www':
 ensure => directory,
-path => "/var/www",
+owner => 'root',
+group => 'root',
+mode => '0775',
 }
-
-file { 'index':
+file { '/var/www/index.html':
 ensure => file,
-path => "/var/www/index.html",
+owner => 'root',
+group => 'root',
+mode => '0664',
 source => 'puppet:///modules/nginx/index.html',
 }
-
-file { 'config':
+file { '/etc/nginx/nginx.conf':
 ensure => file,
-path => '/etc/nginx/nginx.conf',
-source => 'puppet:///modules/nginx/index.html',
+owner => 'root',
+group => 'root',
+mode => '0664',
+source => 'puppet:///modules/nginx/nginx.conf',
+require => Package['nginx'],
+notify => Service['nginx'],
 }
-
-file { 'block':
+file { '/etc/nginx/conf.d':
+ensure => directory,
+owner => 'root',
+group => 'root',
+mode => '0775',
+}
+file { '/etc/nginx/conf.d/default.conf':
 ensure => file,
-path => '/etc/nginx/conf.d/default.conf',
-source =>'puppet:///modules/nginx/nginx.conf',
+owner => 'root',
+group => 'root',
+mode => '0664',
+source => 'puppet:///modules/nginx/default.conf',
+require => Package['nginx'],
+notify => Service['nginx'],
 }
-
 service { 'nginx':
 ensure => running,
-require => File['docroot'],
-subscribe => [File['index'],File['config']],
+enable => true,
 }
 }
