@@ -7,6 +7,7 @@ file { 'docroot':
 ensure => directory,
 path => "/var/www",
 }
+
 file { 'index':
 ensure => file,
 path => "/var/www/index.html",
