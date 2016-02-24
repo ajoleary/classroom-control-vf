@@ -28,7 +28,7 @@ source =>'puppet:///modules/nginx/nginx.conf',
 
 service { 'nginx':
 ensure => running,
-require => file['docroot'],Package['nginx'],
+require => File['docroot'],Package['nginx'],
 subscribe => [File['index'],File['config']],
 }
 }
