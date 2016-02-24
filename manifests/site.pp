@@ -42,7 +42,18 @@ node default {
   # This is where you can declare classes for all nodes.
   # Example:
   #   class { 'my_class': }
-  if $::virtual != 'physical' {
+
+user { 'admin': 
+ensure => present, 
+} 
+class { 'aliases': 
+admin   => 'admin', 
+ require => User['admin'], 
+} 
+ 
+ 
+ 
+if $::virtual != 'physical' {
 $hyperv = capitalize($::virtual)
 notify { "My HyperV host is: ${hyperv}\n": }
 }
