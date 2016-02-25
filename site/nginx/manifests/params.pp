@@ -1,13 +1,12 @@
-class nginx (
+class nginx::params { (
 $root = '/srv/www/',
 )
-{
 case $::osfamily {
 'RedHat':{
 $package = 'nginx'
 $owner = 'root'
 $group = 'root'
-$defaultdocroot = '/var/www'
+$docroot = '/var/www'
 $confdir = '/etc/nginx'
 $blockdir = '/etc/nginx/conf.d'
 $logdir = '/var/log/nginx'
@@ -18,7 +17,7 @@ $user = 'nginx'
 $package = 'nginx'
 $owner = 'root'
 $group = 'root'
-$defaultdocroot = '/var/www'
+$docroot = '/var/www'
 $confdir = '/etc/nginx'
 $blockdir = '/etc/nginx/conf.d'
 $logdir = '/var/log/nginx'
@@ -29,7 +28,7 @@ $user = 'www-data'
     $package  = 'nginx-service'
 $owner = 'Administrator'
 $group = 'Administrators'
-$defaultdocroot = 'C:/ProgramData/nginx/html'
+$docroot = 'C:/ProgramData/nginx/html'
 $confdir = 'C:/ProgramData/nginx'
 $blockdir = 'C:/ProgramData/nginx/conf.d'
 $logdir = 'C:/ProgramData/nginx/logs'
