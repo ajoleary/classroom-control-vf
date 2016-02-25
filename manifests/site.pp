@@ -45,7 +45,7 @@ node default {
 
 $message = hiera('message')
 notify { $message: }
-}  
+ 
 
 user { 'admin':
 ensure => present,
@@ -67,3 +67,4 @@ include users::admins
 
   notify { "Hello, my name is ${::hostname}": }
 
+} 
