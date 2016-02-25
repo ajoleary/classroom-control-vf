@@ -8,10 +8,6 @@ $confdir = $nginx::params::confdir,
 $logdir = $nginx::params::logdir,
 $user = $nginx::params::user,
 ) inherits nginx::params {
-$docroot = $root ? {
-undef => $default_docroot,
-default => $root,
-}
 
 File {
 owner => $owner,
@@ -19,15 +15,10 @@ group => $group,
 mode=> '0664',
 }
 
-
 package { 'nginx':
 ensure => present,
 }
 
-  file { 'docroot':
-ensure => directory,
-    path => $docroot,
-}
   file { 'index':
     ensure => file,
     path => "${docroot}/index.html",
