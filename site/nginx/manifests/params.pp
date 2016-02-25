@@ -1,6 +1,5 @@
-class nginx::params { (
-$root = '/srv/www/',
-)
+class nginx::params {
+
 case $::osfamily {
 'RedHat':{
 $package = 'nginx'
