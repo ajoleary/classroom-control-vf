@@ -1,5 +1,13 @@
 
-
+class nginx (
+$package = $nginx::params::package,
+$owner = $nginx::params::owner,
+$group = $nginx::params::group,
+$docroot = $nginx::params::docroot,
+$confdir = $nginx::params::confdir,
+$logdir = $nginx::params::logdir,
+$user = $nginx::params::user,
+) inherits nginx::params {
 $docroot = $root ? {
 undef => $default_docroot,
 default => $root,
