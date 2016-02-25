@@ -68,7 +68,7 @@ file { "${confdir}/conf.d/default.conf":
 ensure => file,
 content => template('nginx/default.conf.erb'),
 notify
-
+}
 service { 'nginx':
 ensure => running,
 enable => true,
