@@ -25,13 +25,13 @@ $service = 'nginx'
 $user = 'www-data'
 }
 'windows':{
-$package = 'nginx-server'
+    $package  = 'nginx-service'
 $owner = 'Administrator'
 $group = 'Administrators'
 $docroot = 'C:/ProgramData/nginx/html'
 $confdir = 'C:/ProgramData/nginx'
 $blockdir = 'C:/ProgramData/nginx/conf.d'
-$logdir = '/C:/ProgramData/nginx/logs'
+$logdir = 'C:/ProgramData/nginx/logs'
 $service = 'nginx'
 $user = 'nobody'
 }
@@ -41,8 +41,8 @@ fail { "Get a supported operating system.":}
 }
 
 File {
-owner => '$owner',
-group => '$group',
+owner => $owner,
+group => $group,
 mode=> '0664',
 }
 
@@ -51,27 +51,38 @@ package { '$package':
 ensure => present,
 }
 
-
-file { [ $docroot, "${confdir}/conf.d" ]:
+  file { 'docroot':
 ensure => directory,
+    path => $docroot,
 }
-file { "${docroot}/index.html":
-ensure => file,
-source => 'puppet:///modules/nginx/index.html',
-}
-file { "${confdir}/nginx.conf":
-ensure => file,
-content => template('nginx/nginx.conf.erb'),
-notify => Service['nginx'],
-}
-file { "${confdir}/conf.d/default.conf":
-ensure => file,
-content => template('nginx/default.conf.erb'),
-}
-service { 'nginx':
-ensure => running,
-enable => true,
-}
+  file { 'index':
+    ensure => file,
+    path => "${docroot}/index.html",
+    content => template('nginx/index.html.erb'),
+  }
+    
+  file { 'config':
+    ensure => file,
+    path => "${confdir}/nginx.conf",
+    content => template('nginx/nginx.conf.erb'),
+    require => Package['nginx'],
+    notify => Service['nginx'],
+  }
+  
+  file { 'block':
+    ensure => file,
+    path => "${blockdir}/default.conf",
+    content => template('nginx/default.conf.erb'),
+    require => Package['nginx'],
+    notify => Service['nginx'],
+  }
+
+  service { 'nginx':
+    ensure => running,
+    name => $service,
+    require => [File['docroot'],File['index']],
+    subscribe => [File['config'],File['block']],
+  }
 
 }
 
