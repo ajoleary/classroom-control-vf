@@ -1,42 +1,78 @@
-class nginx {
+class nginx 
+{
+
+case $::osfamily {
+'RedHat':{
+$package = 'nginx'
+$owner = 'root'
+$group = 'root'
+$docroot = '/var/www'
+$confdir = '/etc/nginx'
+$blockdir = '/etc/nginx/conf.d'
+$logdir = '/var/log/nginx'
+$service = 'nginx'
+$user = 'nginx'
+}
+'Debian':{
+$package = 'nginx'
+$owner = 'root'
+$group = 'root'
+$docroot = '/var/www'
+$confdir = '/etc/nginx'
+$blockdir = '/etc/nginx/conf.d'
+$logdir = '/var/log/nginx'
+$service = 'nginx'
+$user = 'www-data'
+}
+'windows':{
+$package = 'nginx-server'
+$owner = 'Administrator'
+$group = 'Administrators'
+$docroot = 'C:/ProgramData/nginx/html'
+$confdir = 'C:/ProgramData/nginx'
+$blockdir = 'C:/ProgramData/nginx/conf.d'
+$logdir = '/C:/ProgramData/nginx/logs'
+$service = 'nginx'
+$user = 'nobody'
+}
+'default':{
+fail { "Get a supported operating system.":}
+}
+}
+
 File {
-owner => 'root',
-group => 'root',
+owner => '$owner',
+group => '$group',
 mode=> '0664',
 }
-package { 'nginx':
+
+
+package { '$package':
 ensure => present,
 }
-file { '/var/www':
+
+
+file { [ $docroot, "${confdir}/conf.d" ]:
 ensure => directory,
-owner => 'root',
-group => 'root',
-mode => '0775',
 }
-file { '/var/www/index.html':
+file { "${docroot}/index.html":
 ensure => file,
 source => 'puppet:///modules/nginx/index.html',
 }
-file { '/etc/nginx/nginx.conf':
+file { "${confdir}/nginx.conf":
 ensure => file,
-source => 'puppet:///modules/nginx/nginx.conf',
-require => Package['nginx'],
+content => template('nginx/nginx.conf.erb'),
 notify => Service['nginx'],
 }
-file { '/etc/nginx/conf.d':
-ensure => directory,
-owner => 'root',
-group => 'root',
-mode => '0775',
-}
-file { '/etc/nginx/conf.d/default.conf':
+file { "${confdir}/conf.d/default.conf":
 ensure => file,
-source => 'puppet:///modules/nginx/default.conf',
-require => Package['nginx'],
-notify => Service['nginx'],
-}
+content => template('nginx/default.conf.erb'),
+notify
+
 service { 'nginx':
 ensure => running,
 enable => true,
 }
+
 }
+
